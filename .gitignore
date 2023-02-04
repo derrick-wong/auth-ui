@@ -37,3 +37,6 @@ storybook-static/
 
 # turbo
 .turbo
+
+.idea/**
+package-lock.json

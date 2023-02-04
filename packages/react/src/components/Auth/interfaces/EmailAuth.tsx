@@ -16,7 +16,7 @@ export interface EmailAuthProps {
   redirectTo?: RedirectTo
   magicLink?: boolean
   i18n: I18nVariables
-  appearance?: Appearance,
+  appearance?: Appearance
   hCaptchaKey?: string
 }
 
@@ -52,7 +52,7 @@ function EmailAuth({
   const [captchaKey, setCaptchaKey] = useState(hCaptchaKey)
   const [captchaToken, setCaptchaToken] = useState('')
 
-  const captcha = useRef()
+  const captchaRef = React.useRef<HCaptcha>(null);
 
   useEffect(() => {
     setEmail(defaultEmail)
@@ -75,6 +75,7 @@ function EmailAuth({
             password,
             options: {captchaToken},
           })
+        captchaRef?.current?.resetCaptcha();
         if (signInError) setError(signInError.message)
         break
       case 'sign_up':
@@ -86,6 +87,7 @@ function EmailAuth({
           password,
           options: {captchaToken},
         })
+        captchaRef?.current?.resetCaptcha();
         if (signUpError) setError(signUpError.message)
         // Check if session is null -> email confirmation setting is turned on
         else if (signUpUser && !signUpSession)
@@ -108,10 +110,11 @@ function EmailAuth({
 
   const captchaView = () => {
     if (captchaKey) {
-      return <HCaptcha sitekey={captchaKey}
-                        onVerify={(token: string) => {
-                          setCaptchaToken(token)
-                        }}/>;
+      return <HCaptcha ref={captchaRef}
+                       sitekey={captchaKey}
+                       onVerify={(token: string) => {
+                         setCaptchaToken(token)
+                       }}/>;
     }
     return <></>;
   }

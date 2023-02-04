@@ -11,9 +11,9 @@ Auth UI is kept deliberately separate from @supabase/auth-helpers so that develo
 # How to publish library?
 
 ```shell
- pnpm install --frozen-lockfile
- pnpm run build
- pnpm -w run ci:version
- pnpm store path
+ pnpm install --frozen-lockfile && \
+ pnpm run build && \
+ pnpm -w run ci:version && \
+ pnpm store path && \
  pnpm -w run ci:release
 ```

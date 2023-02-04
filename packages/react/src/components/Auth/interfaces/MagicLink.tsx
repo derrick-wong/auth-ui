@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { VIEWS } from '../../../constants'
 import { Appearance, I18nVariables, RedirectTo } from '../../../types'
 import { Anchor, Button, Container, Input, Label, Message } from './../../UI'
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 function MagicLink({
   setAuthView,
@@ -11,6 +12,7 @@ function MagicLink({
   i18n,
   appearance,
   showLinks,
+  hCaptchaKey,
 }: {
   setAuthView: any
   supabaseClient: SupabaseClient
@@ -18,11 +20,16 @@ function MagicLink({
   i18n: I18nVariables
   appearance?: Appearance
   showLinks?: boolean
+  hCaptchaKey?: string
 }) {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [captchaKey, setCaptchaKey] = useState(hCaptchaKey)
+  const [captchaToken, setCaptchaToken] = useState('')
+
+  const captchaRef = React.useRef<HCaptcha>(null);
 
   const handleMagicLinkSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -31,11 +38,23 @@ function MagicLink({
     setLoading(true)
     const { error } = await supabaseClient.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: redirectTo },
+      options: { emailRedirectTo: redirectTo, captchaToken },
     })
+    captchaRef?.current?.resetCaptcha();
     if (error) setError(error.message)
     else setMessage('Check your email for the magic link')
     setLoading(false)
+  }
+
+  const captchaView = () => {
+    if (captchaKey) {
+      return <HCaptcha ref={captchaRef}
+                       sitekey={captchaKey}
+                       onVerify={(token: string) => {
+                         setCaptchaToken(token)
+                       }}/>;
+    }
+    return <></>;
   }
 
   return (
@@ -54,6 +73,9 @@ function MagicLink({
               }
               appearance={appearance}
             />
+          </div>
+          <div>
+            {captchaView()}
           </div>
           <Button
             color="primary"

@@ -1,12 +1,11 @@
 {
-  "name": "@chef/auth-ui",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@chefu/auth-ui",
+  "version": "0.0.2",
   "scripts": {
     "build": "turbo run build",
-    "build:react": "turbo run build --filter=@chef/auth-ui-react",
+    "build:react": "turbo run build --filter=@chefu/auth-ui-react",
     "storybook": "turbo run storybook",
-    "storybook:react": "turbo run storybook --filter=@chef/auth-ui-react",
+    "storybook:react": "turbo run storybook --filter=@chefu/auth-ui-react",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

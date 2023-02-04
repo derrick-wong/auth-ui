@@ -1,6 +1,6 @@
 {
-  "name": "@chef/auth-ui-react",
-  "version": "0.2.6",
+  "name": "@chefu/auth-ui-react",
+  "version": "0.2.8",
   "main": "./dist/cjs/src/index.js",
   "module": "./dist/esm/src/index.js",
   "files": [
@@ -10,10 +10,10 @@
     "access": "public"
   },
   "types": "./dist/esm/src/index.d.ts",
-  "homepage": "https://github.com/supabase-community/auth-ui#readme",
+  "homepage": "https://github.com/derrick-wong/auth-ui#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/supabase-community/auth-ui.git"
+    "url": "git+https://github.com/derrick-wong/auth-ui.git"
   },
   "sideEffects": false,
   "source": "src/index.tsx",
@@ -33,6 +33,7 @@
     "react-dom": "^17.0.1"
   },
   "dependencies": {
+    "@hcaptcha/react-hcaptcha": "^1.4.4",
     "@stitches/core": "^1.2.8",
     "@stitches/react": "^1.2.8",
     "prop-types": "^15.7.2"

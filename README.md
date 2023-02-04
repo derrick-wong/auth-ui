@@ -1,4 +1,4 @@
-# Supabase Auth UI
+# Chef (Supabase) Auth UI - Fork from Official Supabase Auth UI
 
 Supabase Auth UI is a collection of pre built UI components that work seamlessly with @supabase/auth-helpers.
 

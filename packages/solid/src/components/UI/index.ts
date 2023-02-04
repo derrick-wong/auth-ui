@@ -1,7 +1,0 @@
-export * from './Anchor'
-export * from './Button'
-export * from './Container'
-export * from './Divider'
-export * from './Input'
-export * from './Label'
-export * from './Message'

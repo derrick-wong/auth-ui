@@ -1,37 +1,31 @@
-import { createStitches, createTheme } from '@stitches/core'
-import { merge } from '../../utils'
-import React, { useEffect, useState } from 'react'
-import { Auth as AuthProps, Localization, I18nVariables } from '../../types'
-import { VIEWS } from './../../constants'
-import {
-  EmailAuth,
-  EmailAuthProps,
-  ForgottenPassword,
-  MagicLink,
-  SocialAuth,
-  UpdatePassword,
-} from './interfaces'
-import { UserContextProvider, useUser } from './UserContext'
+import {createStitches, createTheme} from '@stitches/core'
+import {merge} from '../../utils'
+import React, {useEffect, useState} from 'react'
+import {Auth as AuthProps, I18nVariables, Localization} from '../../types'
+import {VIEWS} from './../../constants'
+import {EmailAuth, EmailAuthProps, ForgottenPassword, MagicLink, SocialAuth, UpdatePassword,} from './interfaces'
+import {UserContextProvider, useUser} from './UserContext'
 
 import * as _defaultLocalization from '../../../common/lib/Localization'
 
-const defaultLocalization: Localization = { ..._defaultLocalization }
+const defaultLocalization: Localization = {..._defaultLocalization}
 
-export const { getCssText } = createStitches()
+export const {getCssText} = createStitches()
 
 function Auth({
-  supabaseClient,
-  socialLayout = 'vertical',
-  providers,
-  view = 'sign_in',
-  redirectTo,
-  onlyThirdPartyProviders = false,
-  magicLink = false,
-  showLinks = true,
-  appearance,
-  theme = 'default',
-  localization = { lang: 'en' },
-}: AuthProps): JSX.Element | null {
+                supabaseClient,
+                socialLayout = 'vertical',
+                providers,
+                view = 'sign_in',
+                redirectTo,
+                onlyThirdPartyProviders = false,
+                magicLink = false,
+                showLinks = true,
+                appearance,
+                theme = 'default',
+                localization = {lang: 'en'},
+                hCaptchaKey,
+              }: AuthProps): JSX.Element | null {
   /**
    * Localization support
    */
@@ -79,19 +73,19 @@ function Auth({
 
     if (themeKeys) {
       appearance.theme &&
-        Object.values(appearance.theme).map((theme, i) => {
-          const key = themeKeys[i]
-          // ignore default theme
-          if (key === 'default') return {}
+      Object.values(appearance.theme).map((theme, i) => {
+        const key = themeKeys[i]
+        // ignore default theme
+        if (key === 'default') return {}
 
-          const merged = merge(
-            (appearance && appearance.theme && appearance.theme[key]) ?? {},
-            (appearance && appearance.variables && appearance.variables[key]) ??
-              {}
-          )
+        const merged = merge(
+          (appearance && appearance.theme && appearance.theme[key]) ?? {},
+          (appearance && appearance.variables && appearance.variables[key]) ??
+          {}
+        )
 
-          themessss[themeKeys[i]] = merged
-        })
+        themessss[themeKeys[i]] = merged
+      })
     }
 
     setThemes(themessss)
@@ -106,18 +100,18 @@ function Auth({
    * @param children
    * @returns React.ReactNode
    */
-  const Container = ({ children }: { children: React.ReactNode }) => (
+  const Container = ({children}: { children: React.ReactNode }) => (
     // @ts-ignore
     <div
       className={
         theme !== 'default'
           ? createTheme(
-              merge(
-                // @ts-ignore
-                appearance?.theme[theme],
-                appearance?.variables?.[theme] ?? {}
-              )
+            merge(
+              // @ts-ignore
+              appearance?.theme[theme],
+              appearance?.variables?.[theme] ?? {}
             )
+          )
           : ''
       }
     >
@@ -156,6 +150,7 @@ function Auth({
     showLinks,
     i18n,
     appearance,
+    hCaptchaKey,
   }
 
   /**
@@ -166,7 +161,7 @@ function Auth({
     case VIEWS.SIGN_IN:
       return (
         <Container>
-          <EmailAuth {...emailProp} authView={'sign_in'} />
+          <EmailAuth {...emailProp} authView={'sign_in'}/>
         </Container>
       )
     case VIEWS.SIGN_UP:
@@ -185,6 +180,7 @@ function Auth({
             magicLink={magicLink}
             showLinks={showLinks}
             i18n={i18n}
+            hCaptchaKey={hCaptchaKey}
           />
         </Container>
       )

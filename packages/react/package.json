@@ -1,5 +1,5 @@
 {
-  "name": "@supabase/auth-ui-react",
+  "name": "@chef/auth-ui-react",
   "version": "0.2.6",
   "main": "./dist/cjs/src/index.js",
   "module": "./dist/esm/src/index.js",

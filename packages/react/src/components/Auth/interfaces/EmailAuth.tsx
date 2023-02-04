@@ -1,15 +1,8 @@
-import { SupabaseClient } from '@supabase/supabase-js'
-import React, { useEffect, useRef, useState } from 'react'
-import {
-  Appearance,
-  I18nVariables,
-  RedirectTo,
-  ViewSignUp,
-  ViewSignIn,
-  ViewsMap,
-  ViewType,
-} from './../../../types'
-import { Anchor, Button, Container, Input, Label, Message } from './../../UI'
+import {SupabaseClient} from '@supabase/supabase-js'
+import HCaptcha from '@hcaptcha/react-hcaptcha'
+import React, {useEffect, useRef, useState} from 'react'
+import {Appearance, I18nVariables, RedirectTo, ViewSignIn, ViewSignUp, ViewsMap, ViewType,} from './../../../types'
+import {Anchor, Button, Container, Input, Label, Message} from './../../UI'
 
 export interface EmailAuthProps {
   authView: ViewSignIn | ViewSignUp
@@ -23,7 +16,8 @@ export interface EmailAuthProps {
   redirectTo?: RedirectTo
   magicLink?: boolean
   i18n: I18nVariables
-  appearance?: Appearance
+  appearance?: Appearance,
+  hCaptchaKey?: string
 }
 
 const VIEWS: ViewsMap = {
@@ -35,25 +29,30 @@ const VIEWS: ViewsMap = {
 }
 
 function EmailAuth({
-  authView = 'sign_in',
-  defaultEmail,
-  defaultPassword,
-  setAuthView,
-  setDefaultEmail,
-  setDefaultPassword,
-  supabaseClient,
-  showLinks = true,
-  redirectTo,
-  magicLink,
-  i18n,
-  appearance,
-}: EmailAuthProps) {
+                     authView = 'sign_in',
+                     defaultEmail,
+                     defaultPassword,
+                     setAuthView,
+                     setDefaultEmail,
+                     setDefaultPassword,
+                     supabaseClient,
+                     showLinks = true,
+                     redirectTo,
+                     magicLink,
+                     i18n,
+                     appearance,
+                     hCaptchaKey,
+                   }: EmailAuthProps) {
   const isMounted = useRef<boolean>(true)
   const [email, setEmail] = useState(defaultEmail)
   const [password, setPassword] = useState(defaultPassword)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState('')
+  const [captchaKey, setCaptchaKey] = useState(hCaptchaKey)
+  const [captchaToken, setCaptchaToken] = useState('')
+
+  const captcha = useRef()
 
   useEffect(() => {
     setEmail(defaultEmail)
@@ -70,20 +69,22 @@ function EmailAuth({
     setLoading(true)
     switch (authView) {
       case 'sign_in':
-        const { error: signInError } =
+        const {error: signInError} =
           await supabaseClient.auth.signInWithPassword({
             email,
             password,
+            options: {captchaToken},
           })
         if (signInError) setError(signInError.message)
         break
       case 'sign_up':
         const {
-          data: { user: signUpUser, session: signUpSession },
+          data: {user: signUpUser, session: signUpSession},
           error: signUpError,
         } = await supabaseClient.auth.signUp({
           email,
           password,
+          options: {captchaToken},
         })
         if (signUpError) setError(signUpError.message)
         // Check if session is null -> email confirmation setting is turned on
@@ -105,12 +106,23 @@ function EmailAuth({
     setAuthView(newView)
   }
 
+  const captchaView = () => {
+    if (captchaKey) {
+      return <HCaptcha sitekey={captchaKey}
+                        onVerify={(token: string) => {
+                          setCaptchaToken(token)
+                        }}/>;
+    }
+    return <></>;
+  }
+
+  // @ts-ignore
   return (
     <form
       id={authView === 'sign_in' ? `auth-sign-in` : `auth-sign-up`}
       onSubmit={handleSubmit}
       autoComplete={'on'}
-      style={{ width: '100%' }}
+      style={{width: '100%'}}
     >
       <Container direction="vertical" gap="large" appearance={appearance}>
         <Container direction="vertical" gap="large" appearance={appearance}>
@@ -147,6 +159,9 @@ function EmailAuth({
               }
               appearance={appearance}
             />
+          </div>
+          <div>
+            {captchaView()}
           </div>
         </Container>
 
@@ -221,4 +236,4 @@ function EmailAuth({
   )
 }
 
-export { EmailAuth }
+export {EmailAuth}

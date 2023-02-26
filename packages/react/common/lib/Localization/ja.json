@@ -1,7 +1,9 @@
 {
   "sign_up": {
+    "name_label": "フルネーム",
     "email_label": "電子メールアドレス",
     "password_label": "パスワードを作成",
+    "name_input_placeholder": "Your full name",
     "email_input_placeholder": "Your email address",
     "password_input_placeholder": "Your password",
     "button_label": "サインアップ",

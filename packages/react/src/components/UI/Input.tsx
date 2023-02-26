@@ -44,7 +44,7 @@ const inputDefaultStyles = css({
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   children?: React.ReactNode
-  type: 'text' | 'password' | 'email'
+  type: 'text' | 'password' | 'email' | 'name'
   appearance?: Appearance
 }
 

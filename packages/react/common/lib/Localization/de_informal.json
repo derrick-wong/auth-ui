@@ -1,7 +1,9 @@
 {
   "sign_up": {
+    "name_label": "Nom et prénom",
     "email_label": "E-Mail Adresse",
     "password_label": "Passwort erstellen",
+    "name_input_placeholder": "Ton nom complet",
     "email_input_placeholder": "Deine E-Mail Adresse",
     "password_input_placeholder": "Dein Passwort",
     "button_label": "Registrieren",

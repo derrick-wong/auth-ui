@@ -44,6 +44,7 @@ function EmailAuth({
                      hCaptchaKey,
                    }: EmailAuthProps) {
   const isMounted = useRef<boolean>(true)
+  const [name, setName] = useState('')
   const [email, setEmail] = useState(defaultEmail)
   const [password, setPassword] = useState(defaultPassword)
   const [error, setError] = useState('')
@@ -85,7 +86,12 @@ function EmailAuth({
         } = await supabaseClient.auth.signUp({
           email,
           password,
-          options: {captchaToken},
+          options: {
+            data: {
+              full_name: name
+            },
+            captchaToken: captchaToken
+          },
         })
         captchaRef?.current?.resetCaptcha();
         if (signUpError) setError(signUpError.message)
@@ -129,6 +135,24 @@ function EmailAuth({
     >
       <Container direction="vertical" gap="large" appearance={appearance}>
         <Container direction="vertical" gap="large" appearance={appearance}>
+          {authView === 'sign_up' ?
+            (<div>
+              <Label htmlFor="name" appearance={appearance}>
+                {i18n?.[authView]?.name_label}
+              </Label>
+              <Input
+                type="name"
+                name="name"
+                placeholder={i18n?.[authView]?.name_input_placeholder}
+                defaultValue={name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setName(e.target.value)
+                }
+                autoComplete="name"
+                appearance={appearance}
+              />
+            </div>) : (<></>)
+          }
           <div>
             <Label htmlFor="email" appearance={appearance}>
               {i18n?.[authView]?.email_label}

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import { Appearance, I18nVariables, RedirectTo } from '../../../types'
 import { VIEWS } from './../../../constants'
 import { Anchor, Button, Container, Input, Label, Message } from './../../UI'
+import HCaptcha from "@hcaptcha/react-hcaptcha";
 
 function ForgottenPassword({
   setAuthView,
@@ -11,6 +12,7 @@ function ForgottenPassword({
   i18n,
   appearance,
   showLinks,
+  hCaptchaKey,
 }: {
   setAuthView: any
   supabaseClient: SupabaseClient
@@ -18,11 +20,16 @@ function ForgottenPassword({
   i18n: I18nVariables
   appearance?: Appearance
   showLinks?: boolean
+  hCaptchaKey?: string
 }) {
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const [captchaKey, setCaptchaKey] = useState(hCaptchaKey)
+  const [captchaToken, setCaptchaToken] = useState('')
+
+  const captchaRef = React.useRef<HCaptcha>(null);
 
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -30,11 +37,23 @@ function ForgottenPassword({
     setMessage('')
     setLoading(true)
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo,
+      redirectTo, captchaToken
     })
     if (error) setError(error.message)
     else setMessage('Check your email for the password reset link')
     setLoading(false)
+  }
+
+  const captchaView = () => {
+    if (captchaKey) {
+      return <HCaptcha ref={captchaRef}
+                       sitekey={captchaKey}
+                       theme={"dark"}
+                       onVerify={(token: string) => {
+                         setCaptchaToken(token)
+                       }}/>;
+    }
+    return <></>;
   }
 
   return (
@@ -54,6 +73,9 @@ function ForgottenPassword({
               }
               appearance={appearance}
             />
+          </div>
+          <div className={"justify-center"}>
+            {captchaView()}
           </div>
           <Button
             type="submit"

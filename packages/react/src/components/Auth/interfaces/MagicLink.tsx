@@ -50,6 +50,7 @@ function MagicLink({
     if (captchaKey) {
       return <HCaptcha ref={captchaRef}
                        sitekey={captchaKey}
+                       theme={"dark"}
                        onVerify={(token: string) => {
                          setCaptchaToken(token)
                        }}/>;
@@ -74,7 +75,7 @@ function MagicLink({
               appearance={appearance}
             />
           </div>
-          <div>
+          <div className={"justify-center"}>
             {captchaView()}
           </div>
           <Button

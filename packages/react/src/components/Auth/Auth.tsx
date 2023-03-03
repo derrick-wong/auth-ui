@@ -194,6 +194,7 @@ function Auth({
             redirectTo={redirectTo}
             showLinks={showLinks}
             i18n={i18n}
+            hCaptchaKey={hCaptchaKey}
           />
         </Container>
       )

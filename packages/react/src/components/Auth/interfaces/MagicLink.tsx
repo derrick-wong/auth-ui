@@ -1,9 +1,10 @@
 import { SupabaseClient } from '@supabase/supabase-js'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { VIEWS } from '../../../constants'
 import { Appearance, I18nVariables, RedirectTo } from '../../../types'
 import { Anchor, Button, Container, Input, Label, Message } from './../../UI'
 import HCaptcha from "@hcaptcha/react-hcaptcha";
+import {toast} from "react-toastify";
 
 function MagicLink({
   setAuthView,
@@ -30,6 +31,15 @@ function MagicLink({
   const [captchaToken, setCaptchaToken] = useState('')
 
   const captchaRef = React.useRef<HCaptcha>(null);
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    if (message) {
+      toast.info(message);
+    }
+  },[error, message])
 
   const handleMagicLinkSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -98,12 +108,6 @@ function MagicLink({
           >
             {i18n?.sign_in?.link_text}
           </Anchor>
-        )}
-        {message && <Message appearance={appearance}>{message}</Message>}
-        {error && (
-          <Message color="danger" appearance={appearance}>
-            {error}
-          </Message>
         )}
       </Container>
     </form>

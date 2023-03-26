@@ -1,8 +1,9 @@
 import { Provider, SupabaseClient } from '@supabase/supabase-js'
-import { useState } from 'react'
+import {useEffect, useState} from 'react'
 import { Appearance, I18nVariables, SocialLayout } from '../../../types'
 import { Button, Container, Divider } from './../../UI'
 import * as SocialIcons from './../Icons'
+import {toast} from "react-toastify";
 
 interface SocialAuthProps {
   supabaseClient: SupabaseClient
@@ -30,7 +31,13 @@ function SocialAuth({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const verticalSocialLayout = socialLayout === 'vertical' ? true : false
+  const verticalSocialLayout = socialLayout === 'vertical'
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  },[error])
 
   const handleProviderSignIn = async (provider: Provider) => {
     setLoading(true)

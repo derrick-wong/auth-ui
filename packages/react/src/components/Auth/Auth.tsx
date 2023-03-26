@@ -7,6 +7,7 @@ import {EmailAuth, EmailAuthProps, ForgottenPassword, MagicLink, SocialAuth, Upd
 import {UserContextProvider, useUser} from './UserContext'
 
 import * as _defaultLocalization from '../../../common/lib/Localization'
+import {ToastContainer} from "react-toastify";
 
 const defaultLocalization: Localization = {..._defaultLocalization}
 
@@ -102,33 +103,47 @@ function Auth({
    */
   const Container = ({children}: { children: React.ReactNode }) => (
     // @ts-ignore
-    <div
-      className={
-        theme !== 'default'
-          ? createTheme(
-            merge(
-              // @ts-ignore
-              appearance?.theme[theme],
-              appearance?.variables?.[theme] ?? {}
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+      <div
+        className={
+          theme !== 'default'
+            ? createTheme(
+              merge(
+                // @ts-ignore
+                appearance?.theme[theme],
+                appearance?.variables?.[theme] ?? {}
+              )
             )
-          )
-          : ''
-      }
-    >
-      {SignView && (
-        <SocialAuth
-          appearance={appearance}
-          supabaseClient={supabaseClient}
-          providers={providers}
-          socialLayout={socialLayout}
-          redirectTo={redirectTo}
-          onlyThirdPartyProviders={onlyThirdPartyProviders}
-          i18n={i18n}
-          view={authView as 'sign_in' | 'sign_up'}
-        />
-      )}
-      {!onlyThirdPartyProviders && children}
-    </div>
+            : ''
+        }
+      >
+        {SignView && (
+          <SocialAuth
+            appearance={appearance}
+            supabaseClient={supabaseClient}
+            providers={providers}
+            socialLayout={socialLayout}
+            redirectTo={redirectTo}
+            onlyThirdPartyProviders={onlyThirdPartyProviders}
+            i18n={i18n}
+            view={authView as 'sign_in' | 'sign_up'}
+          />
+        )}
+        {!onlyThirdPartyProviders && children}
+      </div>
+    </>
   )
 
   useEffect(() => {

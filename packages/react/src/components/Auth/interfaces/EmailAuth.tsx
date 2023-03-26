@@ -3,6 +3,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha'
 import React, {useEffect, useRef, useState} from 'react'
 import {Appearance, I18nVariables, RedirectTo, ViewSignIn, ViewSignUp, ViewsMap, ViewType,} from './../../../types'
 import {Anchor, Button, Container, Input, Label, Message} from './../../UI'
+import {toast} from "react-toastify";
 
 export interface EmailAuthProps {
   authView: ViewSignIn | ViewSignUp
@@ -65,6 +66,15 @@ function EmailAuth({
       isMounted.current = false
     }
   }, [authView])
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    if (message) {
+      toast.info(message);
+    }
+  },[error, message])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -289,12 +299,6 @@ function EmailAuth({
           </Container>
         )}
       </Container>
-      {message && <Message appearance={appearance}>{message}</Message>}
-      {error && (
-        <Message color="danger" appearance={appearance}>
-          {error}
-        </Message>
-      )}
     </form>
   )
 }

@@ -1,7 +1,8 @@
 import { SupabaseClient } from '@supabase/supabase-js'
-import React, { useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import { Appearance, I18nVariables } from '../../../types'
 import { Button, Container, Input, Label, Message } from './../../UI'
+import {toast} from "react-toastify";
 
 function UpdatePassword({
   supabaseClient,
@@ -16,6 +17,15 @@ function UpdatePassword({
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+    if (message) {
+      toast.info(message);
+    }
+  },[error, message])
 
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -55,12 +65,6 @@ function UpdatePassword({
             {i18n?.update_password?.button_label}
           </Button>
         </Container>
-        {message && <Message appearance={appearance}>{message}</Message>}
-        {error && (
-          <Message color="danger" appearance={appearance}>
-            {error}
-          </Message>
-        )}
       </Container>
     </form>
   )

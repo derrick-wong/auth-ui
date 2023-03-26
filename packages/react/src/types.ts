@@ -106,9 +106,13 @@ export interface Auth {
 export type I18nVariables = {
   sign_up?: {
     name_label?: string
+    firstname_label?: string
+    lastname_label?: string
     email_label?: string
     password_label?: string
     name_input_placeholder?: string
+    firstname_input_placeholder?: string
+    lastname_input_placeholder?: string
     email_input_placeholder?: string
     password_input_placeholder?: string
     button_label?: string

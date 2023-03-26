@@ -1,9 +1,13 @@
 {
   "sign_up": {
-    "name_label": "Full Name",
+    "name_label": "Username",
+    "firstname_label": "First Name",
+    "lastname_label": "Last Name",
     "email_label": "Email address",
     "password_label": "Create a Password",
-    "name_input_placeholder": "Your full name",
+    "name_input_placeholder": "Your username",
+    "firstname_input_placeholder": "Your first name",
+    "lastname_input_placeholder": "Your last name",
     "email_input_placeholder": "Your email address",
     "password_input_placeholder": "Your password",
     "button_label": "Sign up",

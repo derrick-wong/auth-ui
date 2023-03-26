@@ -45,6 +45,8 @@ function EmailAuth({
                    }: EmailAuthProps) {
   const isMounted = useRef<boolean>(true)
   const [name, setName] = useState('')
+  const [firstName, setFirstName] = useState('')
+  const [lastName, setLastName] = useState('')
   const [email, setEmail] = useState(defaultEmail)
   const [password, setPassword] = useState(defaultPassword)
   const [error, setError] = useState('')
@@ -88,7 +90,9 @@ function EmailAuth({
           password,
           options: {
             data: {
-              full_name: name
+              full_name: name,
+              first_name: firstName,
+              last_name: lastName
             },
             captchaToken: captchaToken
           },
@@ -138,22 +142,52 @@ function EmailAuth({
       <Container direction="vertical" gap="large" appearance={appearance}>
         <Container direction="vertical" gap="large" appearance={appearance}>
           {authView === 'sign_up' ?
-            (<div>
-              <Label htmlFor="name" appearance={appearance}>
-                {i18n?.[authView]?.name_label}
-              </Label>
-              <Input
-                type="name"
-                name="name"
-                placeholder={i18n?.[authView]?.name_input_placeholder}
-                defaultValue={name}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setName(e.target.value)
-                }
-                autoComplete="name"
-                appearance={appearance}
-              />
-            </div>) : (<></>)
+            (<>
+              <div>
+                <Label htmlFor="name" appearance={appearance}>
+                  {i18n?.[authView]?.name_label}
+                </Label>
+                <Input
+                  type="name"
+                  name="name"
+                  placeholder={i18n?.[authView]?.name_input_placeholder}
+                  defaultValue={name}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setName(e.target.value)
+                  }
+                  autoComplete="name"
+                  appearance={appearance}
+                />
+                <Label htmlFor="name" appearance={appearance}>
+                  {i18n?.[authView]?.firstname_label}
+                </Label>
+                <Input
+                  type="name"
+                  name="firstName"
+                  placeholder={i18n?.[authView]?.firstname_input_placeholder}
+                  defaultValue={firstName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setFirstName(e.target.value)
+                  }
+                  autoComplete="firstName"
+                  appearance={appearance}
+                />
+                <Label htmlFor="name" appearance={appearance}>
+                  {i18n?.[authView]?.lastname_label}
+                </Label>
+                <Input
+                  type="name"
+                  name="lastName"
+                  placeholder={i18n?.[authView]?.lastname_input_placeholder}
+                  defaultValue={lastName}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setLastName(e.target.value)
+                  }
+                  autoComplete="lastName"
+                  appearance={appearance}
+                />
+              </div>
+            </>) : (<></>)
           }
           <div>
             <Label htmlFor="email" appearance={appearance}>

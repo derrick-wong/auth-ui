@@ -112,7 +112,6 @@ function EmailAuth({
         // Check if session is null -> email confirmation setting is turned on
         else if (signUpUser && !signUpSession)
           setMessage('Check your email for the confirmation link.')
-          handleViewChange(VIEWS.SIGN_IN)
         break
     }
 

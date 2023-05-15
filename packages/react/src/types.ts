@@ -101,6 +101,7 @@ export interface Auth {
   appearance?: Appearance
   theme?: 'default' | string
   hCaptchaKey?: string
+  tos?: string
 }
 
 export type I18nVariables = {

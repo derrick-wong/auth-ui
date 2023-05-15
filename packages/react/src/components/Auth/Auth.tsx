@@ -26,6 +26,7 @@ function Auth({
                 theme = 'default',
                 localization = {lang: 'en'},
                 hCaptchaKey,
+                tos,
               }: AuthProps): JSX.Element | null {
   /**
    * Localization support
@@ -166,6 +167,7 @@ function Auth({
     i18n,
     appearance,
     hCaptchaKey,
+    tos
   }
 
   /**
@@ -196,6 +198,7 @@ function Auth({
             showLinks={showLinks}
             i18n={i18n}
             hCaptchaKey={hCaptchaKey}
+            tos={tos}
           />
         </Container>
       )

@@ -1,9 +1,10 @@
-import { Provider, SupabaseClient } from '@supabase/supabase-js'
-import {useEffect, useState} from 'react'
+import {Provider, SupabaseClient} from '@supabase/supabase-js'
+import React, {useEffect, useState} from 'react'
 import { Appearance, I18nVariables, SocialLayout } from '../../../types'
 import { Button, Container, Divider } from './../../UI'
 import * as SocialIcons from './../Icons'
 import {toast} from "react-toastify";
+import TermsModal from "../TermsModal";
 
 interface SocialAuthProps {
   supabaseClient: SupabaseClient
@@ -14,6 +15,7 @@ interface SocialAuthProps {
   view: 'sign_in' | 'sign_up'
   i18n: I18nVariables
   appearance?: Appearance
+  tos?: string
 }
 
 type RedirectTo = undefined | string
@@ -27,9 +29,12 @@ function SocialAuth({
   view,
   i18n,
   appearance,
+  tos,
 }: SocialAuthProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [loadedProvider, setLoadProvider] = useState<Provider>();
+  const [modalOpen, setModalOpen] = useState(false);
 
   const verticalSocialLayout = socialLayout === 'vertical'
 
@@ -39,13 +44,44 @@ function SocialAuth({
     }
   },[error])
 
+  const handleAccept = async () => {
+    setModalOpen(false);
+
+    if (loadedProvider) {
+      const {error} = await supabaseClient.auth.signInWithOAuth({
+        provider: loadedProvider,
+        options: {redirectTo},
+      })
+      if (error) setError(error.message)
+    } else {
+      setError("ERROR - No provider found.");
+    }
+  };
+
+  const handleDecline = () => {
+    setModalOpen(false);
+    setError("Must Accept Terms to Sign Up");
+  };
+
+
+  const tosModalView = () => {
+    if (modalOpen && tos) {
+      return <TermsModal isOpen={modalOpen} tos={tos} handleAccept={handleAccept} handleDecline={handleDecline}/>
+    }
+  }
+
   const handleProviderSignIn = async (provider: Provider) => {
     setLoading(true)
-    const { error } = await supabaseClient.auth.signInWithOAuth({
-      provider,
-      options: { redirectTo },
-    })
-    if (error) setError(error.message)
+    if (view == 'sign_in') {
+      const {error} = await supabaseClient.auth.signInWithOAuth({
+        provider,
+        options: {redirectTo},
+      })
+      if (error) setError(error.message)
+    } else if (view == 'sign_up') {
+      setModalOpen(true);
+      setLoadProvider(provider);
+    }
     setLoading(false)
   }
 
@@ -54,7 +90,19 @@ function SocialAuth({
     return word.charAt(0).toUpperCase() + lower.slice(1)
   }
 
-  return (
+  function customProviderText(provider: Provider) {
+    let providerText = view == 'sign_up' ?
+      i18n[view]?.social_provider_text?.replace('in', 'up') : i18n[view]?.social_provider_text;
+    return providerText + ' ' + capitalize(provider);
+  }
+
+  return modalOpen ?
+    (<>
+      <div>
+        {tosModalView()}
+      </div>
+      <div className="modal-backdrop"/>
+    </>) : (
     <>
       {providers && providers.length > 0 && (
         <>
@@ -75,10 +123,7 @@ function SocialAuth({
                     onClick={() => handleProviderSignIn(provider)}
                     appearance={appearance}
                   >
-                    {verticalSocialLayout &&
-                      i18n[view]?.social_provider_text +
-                        ' ' +
-                        capitalize(provider)}
+                    {verticalSocialLayout && customProviderText(provider)}
                   </Button>
                 )
               })}

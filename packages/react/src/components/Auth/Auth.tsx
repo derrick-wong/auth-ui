@@ -113,7 +113,6 @@ function Auth({
         closeOnClick
         rtl={false}
         pauseOnFocusLoss
-        draggable
         pauseOnHover
         theme="colored"
       />
@@ -140,6 +139,7 @@ function Auth({
             onlyThirdPartyProviders={onlyThirdPartyProviders}
             i18n={i18n}
             view={authView as 'sign_in' | 'sign_up'}
+            tos={tos}
           />
         )}
         {!onlyThirdPartyProviders && children}

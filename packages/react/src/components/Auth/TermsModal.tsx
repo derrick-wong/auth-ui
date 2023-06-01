@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {EventHandler, MouseEventHandler} from 'react';
+import {Provider} from "@supabase/supabase-js";
 
 interface TermsModalProps {
   isOpen: boolean;

@@ -3,7 +3,7 @@ import HCaptcha from '@hcaptcha/react-hcaptcha'
 import React, {useEffect, useRef, useState} from 'react'
 import {Appearance, I18nVariables, RedirectTo, ViewSignIn, ViewSignUp, ViewsMap, ViewType,} from './../../../types'
 import {Anchor, Button, Container, Input, Label} from './../../UI'
-import {toast} from "react-toastify";
+import {toast, ToastItem} from "react-toastify";
 import TermsModal from "../TermsModal";
 
 export interface EmailAuthProps {
@@ -47,6 +47,7 @@ function EmailAuth({
                      hCaptchaKey,
                      tos
                    }: EmailAuthProps) {
+
   const isMounted = useRef<boolean>(true)
   const [name, setName] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -59,6 +60,7 @@ function EmailAuth({
   const [captchaKey] = useState(hCaptchaKey)
   const [captchaToken, setCaptchaToken] = useState('')
   const [modalOpen, setModalOpen] = useState(false);
+  const signUpSuccessMsg = 'Check your email for the confirmation link.';
 
   const captchaRef = React.useRef<HCaptcha>(null);
 
@@ -69,7 +71,7 @@ function EmailAuth({
     return () => {
       isMounted.current = false
     }
-  }, [authView])
+  }, [authView]);
 
   useEffect(() => {
     if (error) {
@@ -78,7 +80,17 @@ function EmailAuth({
     if (message) {
       toast.info(message);
     }
-  }, [error, message])
+  }, [error, message]);
+
+  useEffect(() => {
+    toast.onChange((payload: ToastItem) => {
+      if (payload.content == signUpSuccessMsg && payload.status == "removed") {
+        if (typeof window !== "undefined") {
+          window.location.replace("/signin")
+        }
+      }
+    });
+  }, []);
 
   const handleAccept = async () => {
     setModalOpen(false);
@@ -104,20 +116,34 @@ function EmailAuth({
     captchaRef?.current?.resetCaptcha();
 
 
-    if (signUpError) setError(signUpError.message)
+    if (signUpError) {
+      setError(signUpError.message)
+    }
     // Check if session is null -> email confirmation setting is turned on
-    else if (signUpUser && !signUpSession)
-      setMessage('Check your email for the confirmation link.')
-
+    else if (signUpUser && !signUpSession) {
+      clearFields();
+      setMessage(signUpSuccessMsg);
+    }
   };
 
-  const handleDecline = () => {
-    setModalOpen(false);
+  const clearFields = () => {
     setName('')
     setLastName('')
     setFirstName('')
     setEmail(defaultEmail)
     setPassword(defaultPassword)
+
+    if (document) {
+      const inputs = document.getElementsByTagName('input');
+      for (let i = 0; i < inputs.length; i++) {
+        inputs[i].value = "";
+      }
+    }
+  }
+
+  const handleDecline = () => {
+    setModalOpen(false);
+    clearFields();
     setError("Must Accept Terms to Sign Up");
   };
 
@@ -221,7 +247,7 @@ function EmailAuth({
         <Container direction="vertical" gap="large" appearance={appearance}>
           <Container direction="vertical" gap="large" appearance={appearance}>
             {authView === 'sign_up' ?
-              (<>
+              <>
                 <div>
                   <Label htmlFor="name" appearance={appearance}>
                     {i18n?.[authView]?.name_label}
@@ -266,7 +292,7 @@ function EmailAuth({
                     appearance={appearance}
                   />
                 </div>
-              </>) : (<></>)
+              </> : <></>
             }
             <div>
               <Label htmlFor="email" appearance={appearance}>

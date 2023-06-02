@@ -105,17 +105,6 @@ function Auth({
   const Container = ({children}: { children: React.ReactNode }) => (
     // @ts-ignore
     <>
-      <ToastContainer
-        position="top-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        pauseOnHover
-        theme="colored"
-      />
       <div
         className={
           theme !== 'default'

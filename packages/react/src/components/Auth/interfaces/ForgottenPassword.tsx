@@ -4,7 +4,7 @@ import { Appearance, I18nVariables, RedirectTo } from '../../../types'
 import { VIEWS } from './../../../constants'
 import { Anchor, Button, Container, Input, Label, Message } from './../../UI'
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import {toast} from "react-toastify";
+import {toast, ToastItem} from "react-toastify";
 
 function ForgottenPassword({
   setAuthView,
@@ -29,7 +29,7 @@ function ForgottenPassword({
   const [loading, setLoading] = useState(false)
   const [captchaKey, setCaptchaKey] = useState(hCaptchaKey)
   const [captchaToken, setCaptchaToken] = useState('')
-
+  const resetSuccessMsg = 'Check your email for the password reset link';
   const captchaRef = React.useRef<HCaptcha>(null);
 
   useEffect(() => {
@@ -41,6 +41,16 @@ function ForgottenPassword({
     }
   },[error, message])
 
+  useEffect(() => {
+    toast.onChange((payload: ToastItem) => {
+      if (payload.content == resetSuccessMsg && payload.status == "removed") {
+        if (typeof window !== "undefined") {
+          window.location.replace("/signin")
+        }
+      }
+    });
+  }, []);
+
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
@@ -49,8 +59,11 @@ function ForgottenPassword({
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
       redirectTo, captchaToken
     })
-    if (error) setError(error.message)
-    else setMessage('Check your email for the password reset link')
+    if (error) {
+      setError(error.message);
+    } else {
+      setMessage(resetSuccessMsg);
+    }
     setLoading(false)
   }
 

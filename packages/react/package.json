@@ -1,6 +1,6 @@
 {
   "name": "@chefu/auth-ui-react",
-  "version": "0.3.36",
+  "version": "0.3.37",
   "main": "./dist/cjs/src/index.js",
   "module": "./dist/esm/src/index.js",
   "files": [

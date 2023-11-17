@@ -2,7 +2,7 @@ import { SupabaseClient } from '@supabase/supabase-js'
 import React, {useEffect, useState} from 'react'
 import { Appearance, I18nVariables } from '../../../types'
 import { Button, Container, Input, Label, Message } from './../../UI'
-import {toast} from "react-toastify";
+import {toast, ToastItem} from "react-toastify";
 
 function UpdatePassword({
   supabaseClient,
@@ -17,6 +17,7 @@ function UpdatePassword({
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [loading, setLoading] = useState(false)
+  const passChgSuccessMsg = 'Your password has been updated. Please sign-in again.';
 
   useEffect(() => {
     if (error) {
@@ -27,14 +28,28 @@ function UpdatePassword({
     }
   },[error, message])
 
+  useEffect(() => {
+    toast.onChange((payload: ToastItem) => {
+      if (payload.content == passChgSuccessMsg && payload.status == "removed") {
+        if (typeof window !== "undefined") {
+          window.location.replace("/signout")
+        }
+      }
+    });
+  }, []);
+
   const handlePasswordReset = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
     setMessage('')
     setLoading(true)
     const { error } = await supabaseClient.auth.updateUser({ password })
-    if (error) setError(error.message)
-    else setMessage('Your password has been updated')
+
+    if (error) {
+      setError(error.message);
+    } else {
+      setMessage(passChgSuccessMsg);
+    }
     setLoading(false)
   }
 

@@ -4,7 +4,7 @@ import { VIEWS } from '../../../constants'
 import { Appearance, I18nVariables, RedirectTo } from '../../../types'
 import { Anchor, Button, Container, Input, Label, Message } from './../../UI'
 import HCaptcha from "@hcaptcha/react-hcaptcha";
-import {toast} from "react-toastify";
+import {toast, ToastItem} from "react-toastify";
 
 function MagicLink({
   setAuthView,
@@ -29,7 +29,7 @@ function MagicLink({
   const [loading, setLoading] = useState(false)
   const [captchaKey, setCaptchaKey] = useState(hCaptchaKey)
   const [captchaToken, setCaptchaToken] = useState('')
-
+  const magicLinkSuccessMsg = 'Check your email for the magic link';
   const captchaRef = React.useRef<HCaptcha>(null);
 
   useEffect(() => {
@@ -41,6 +41,16 @@ function MagicLink({
     }
   },[error, message])
 
+  useEffect(() => {
+    toast.onChange((payload: ToastItem) => {
+      if (payload.content == magicLinkSuccessMsg && payload.status == "removed") {
+        if (typeof window !== "undefined") {
+          window.location.replace("/signin")
+        }
+      }
+    });
+  }, []);
+
   const handleMagicLinkSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError('')
@@ -51,8 +61,11 @@ function MagicLink({
       options: { emailRedirectTo: redirectTo, captchaToken },
     })
     captchaRef?.current?.resetCaptcha();
-    if (error) setError(error.message)
-    else setMessage('Check your email for the magic link')
+    if (error) {
+      setError(error.message);
+    } else {
+      setMessage(magicLinkSuccessMsg);
+    }
     setLoading(false)
   }
 

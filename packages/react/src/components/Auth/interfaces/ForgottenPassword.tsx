@@ -56,8 +56,9 @@ function ForgottenPassword({
     setError('')
     setMessage('')
     setLoading(true)
+
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-      redirectTo, captchaToken
+      redirectTo: `${window.location.origin}/newpw`, captchaToken
     })
     if (error) {
       setError(error.message);

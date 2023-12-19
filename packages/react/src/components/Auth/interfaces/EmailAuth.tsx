@@ -109,7 +109,8 @@ function EmailAuth({
           accepted_tos: true,
           accepted_date: new Date()
         },
-        captchaToken: captchaToken
+        captchaToken: captchaToken,
+        emailRedirectTo: redirectTo
       },
     });
 

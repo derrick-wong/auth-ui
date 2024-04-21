@@ -113,6 +113,7 @@ function SocialAuth({
               appearance={appearance}
             >
               {providers.map((provider: Provider) => {
+                // @ts-ignore
                 const AuthIcon = SocialIcons[provider]
                 return (
                   <Button

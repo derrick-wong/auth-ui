@@ -1,6 +1,6 @@
 {
   "name": "@chefu/auth-ui-react",
-  "version": "0.3.41",
+  "version": "0.3.43",
   "main": "./dist/cjs/src/index.js",
   "module": "./dist/esm/src/index.js",
   "files": [
@@ -33,7 +33,7 @@
     "react-dom": "^17.0.1"
   },
   "dependencies": {
-    "@hcaptcha/react-hcaptcha": "^1.4.4",
+    "@hcaptcha/react-hcaptcha": "1.10.1",
     "@stitches/core": "^1.2.8",
     "@stitches/react": "^1.2.8",
     "prop-types": "^15.7.2",

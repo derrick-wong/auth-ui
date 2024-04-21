@@ -27,8 +27,8 @@ importers:
   packages/react:
     dependencies:
       '@hcaptcha/react-hcaptcha':
-        specifier: ^1.4.4
-        version: 1.4.4(react-dom@17.0.2)(react@17.0.2)
+        specifier: 1.10.1
+        version: 1.10.1(react-dom@17.0.2)(react@17.0.2)
       '@stitches/core':
         specifier: ^1.2.8
         version: 1.2.8
@@ -44,7 +44,7 @@ importers:
     optionalDependencies:
       fsevents:
         specifier: ^2.3.2
-        version: 2.3.2
+        version: 2.3.3
     devDependencies:
       '@babel/cli':
         specifier: ^7.11.6
@@ -3440,13 +3440,18 @@ packages:
       '@hapi/hoek': 8.5.1
     dev: true
 
-  /@hcaptcha/react-hcaptcha@1.4.4(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-Aen217LDnf5ywbPSwBG5CsoqBLIHIAS9lhj3zQjXJuO13doQ6/ubkCWNuY8jmwYLefoFt3V3MrZmCdKDaFoTuQ==}
+  /@hcaptcha/loader@1.2.3:
+    resolution: {integrity: sha512-tJVkPpvWZ9kIXMAFeH/7B8iIDNN+kpFLBVgtJQgtWa1cAN0bUve2VPuc/UTVa0NUh7tsmd6oAg/C0VUplMt2UQ==}
+    dev: false
+
+  /@hcaptcha/react-hcaptcha@1.10.1(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-P0en4gEZAecah7Pt3WIaJO2gFlaLZKkI0+Tfdg8fNqsDxqT9VytZWSkH4WAkiPRULK1QcGgUZK+J56MXYmPifw==}
     peerDependencies:
       react: '>= 16.3.0'
       react-dom: '>= 16.3.0'
     dependencies:
       '@babel/runtime': 7.18.3
+      '@hcaptcha/loader': 1.2.3
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
     dev: false
@@ -7824,7 +7829,7 @@ packages:
       normalize-path: 3.0.0
       readdirp: 3.6.0
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /chownr@1.1.4:
@@ -10478,8 +10483,8 @@ packages:
     dev: true
     optional: true
 
-  /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
+  /fsevents@2.3.3:
+    resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
     os: [darwin]
     requiresBuild: true
@@ -10807,7 +10812,7 @@ packages:
       source-map: 0.6.1
       wordwrap: 1.0.0
     optionalDependencies:
-      uglify-js: 3.15.5
+      uglify-js: 3.17.4
     dev: true
 
   /hard-rejection@2.1.0:
@@ -12211,7 +12216,7 @@ packages:
       sane: 4.1.0
       walker: 1.0.8
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -15899,7 +15904,7 @@ packages:
       webpack-manifest-plugin: 2.2.0(webpack@4.44.2)
       workbox-webpack-plugin: 5.1.4(webpack@4.44.2)
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     transitivePeerDependencies:
       - '@types/webpack'
       - bluebird
@@ -16565,7 +16570,7 @@ packages:
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /rsvp@4.8.5:
@@ -18131,8 +18136,8 @@ packages:
     hasBin: true
     dev: true
 
-  /uglify-js@3.15.5:
-    resolution: {integrity: sha512-hNM5q5GbBRB5xB+PMqVRcgYe4c8jbyZ1pzZhS6jbq54/4F2gFK869ZheiE5A8/t+W5jtTNpWef/5Q9zk639FNQ==}
+  /uglify-js@3.17.4:
+    resolution: {integrity: sha512-T9q82TJI9e/C1TAxYvfb16xO120tMVFZrGA3f9/P4424DNu6ypK103y0GPFVa17yotwSyZW5iYXgjYHkGrJW/g==}
     engines: {node: '>=0.8.0'}
     hasBin: true
     requiresBuild: true

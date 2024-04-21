@@ -98,7 +98,7 @@ function MagicLink({
               appearance={appearance}
             />
           </div>
-          <div className={"justify-center"}>
+          <div className={"m-auto justify-center"}>
             {captchaView()}
           </div>
           <Button
